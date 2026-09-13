@@ -4,59 +4,60 @@ namespace cb
 {
     template <typename T>
     CircularBuffer<T>::CircularBuffer()
-        : buffer{nullptr}, capacity{0}, size{0}, end{0}, start{0}
+        : _buffer{nullptr}, _capacity{0}, _size{0}, _end{0}, _start{0}
     {
     }
 
     template <typename T>
     CircularBuffer<T>::~CircularBuffer()
     {
-        delete[] this->buffer;
+        delete[] this->_buffer;
     }
 
     template <typename T>
     CircularBuffer<T>::CircularBuffer(const CircularBuffer<T> &cb)
-        : capacity{cb.capacity},
-          size{cb.size},
-          end{cb.end},
-          start{cb.start},
-          buffer{new T[cb.capacity]}
+        : _capacity{cb._capacity},
+          _size{cb._size},
+          _end{cb._end},
+          _start{cb._start},
+          _buffer{new T[cb._capacity]}
     {
         for (size_t i = 0; i < capacity; i++)
         {
-            buffer[i] = cb.buffer[i];
+            _buffer[i] = cb._buffer[i];
         }
     }
 
     template <typename T>
     CircularBuffer<T>::CircularBuffer(int capacity)
-        : size{0}, end{0}, start{0}
+        : _size{0}, _end{0}, _start{0}
     {
-        set_capacity(capacity);
-        this->buffer = new T[this->capacity];
+        is_capacity_correct(capacity);
+        this->_capacity = static_cast<size_t>(capacity);
+        this->_buffer = new T[this->_capacity];
     }
 
     template <typename T>
     CircularBuffer<T>::CircularBuffer(int capacity, const T &elem)
     {
-        set_capacity(capacity);
-        size = this->capacity;
-        start = 0;
-        end = 0;
+        is_capacity_correct(capacity);
+        this->_capacity = static_cast<size_t>(capacity);
+        _size = this->_capacity;
+        _start = 0;
+        _end = 0;
 
-        buffer = new T[this->capacity];
-        for (size_t i = 0; i < this->capacity; i++)
+        _buffer = new T[this->_capacity];
+        for (size_t i = 0; i < this->_capacity; i++)
         {
-            buffer[i] = elem;
+            _buffer[i] = elem;
         }
     }
 
     template <typename T>
-    bool CircularBuffer<T>::is_capacity_correct(int capacity) const
+    void CircularBuffer<T>::is_capacity_correct(int capacity) const
     {
-        if (new_capacity <= 0)
+        if (capacity <= 0)
             throw std::invalid_argument{"Capacity must be greater than 0"};
-        capacity = static_cast<size_t>(new_capacity);
     }
 
 }

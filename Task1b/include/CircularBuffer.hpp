@@ -9,19 +9,18 @@ namespace cb
     template <typename T>
     class CircularBuffer
     {
-        T *buffer;       // array (better smart-pointers)
-        size_t capacity; // maximum number of elements
-        size_t size;     // current number of elements
-        size_t end;      // "write to" buffer index
-        size_t start;    // "read from" buffer index
+        T *_buffer;       // array (better smart-pointers)
+        size_t _capacity; // maximum number of elements
+        size_t _size;     // current number of elements
+        size_t _end;      // "write to" buffer index
+        size_t _start;    // "read from" buffer index
 
         /**
          * @brief Check if capacity is correct (>= 0)
          * @param capacity Maximum number of elements in buffer
-         * @return True if capacity >= 0 else false
          * @throws std::invalid_argument if capacity <= 0
          */
-        bool is_capacity_correct(int capacity) const;
+        void is_capacity_correct(int capacity) const;
 
     public:
         /**
@@ -82,13 +81,13 @@ namespace cb
         void resize(int new_size, const T &item = T());
 
         // Оператор присваивания.
-        CircularBuffer &operator=(const CircularBuffer &cb);
+        CircularBuffer<T> &operator=(const CircularBuffer<T> &cb);
 
-        friend bool operator==(const CircularBuffer &a, const CircularBuffer &b);
-        friend bool operator!=(const CircularBuffer &a, const CircularBuffer &b);
+        friend bool operator==(const CircularBuffer<T> &a, const CircularBuffer<T> &b);
+        friend bool operator!=(const CircularBuffer<T> &a, const CircularBuffer<T> &b);
 
         // Обменивает содержимое буфера с буфером cb.
-        void swap(CircularBuffer &cb);
+        void swap(CircularBuffer<T> &cb);
 
         // Добавляет элемент в конец буфера.
         // Если текущий размер буфера равен его ёмкости, то переписывается
