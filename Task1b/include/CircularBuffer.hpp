@@ -1,20 +1,38 @@
 #pragma once
 
+#include <iostream>
+#include <stdexcept>
+
 namespace cb
 {
     // typedef char value_type;
-    template <class T>
+    template <typename T>
     class CircularBuffer
     {
-        T *buffer;
-        /*... реализация ... */
+        T *buffer;       // array (better smart-pointers)
+        size_t capacity; // maximum number of elements
+        size_t size;     // current number of elements
+        size_t end;      // "write to" buffer index
+        size_t start;    // "read from" buffer index
+
+        /**
+         * @brief Check if capacity is correct (>= 0)
+         * @param capacity Maximum number of elements in buffer
+         * @return True if capacity >= 0 else false
+         * @throws std::invalid_argument if capacity <= 0
+         */
+        bool is_capacity_correct(int capacity) const;
+
     public:
+        /**
+         * @brief Constructs container. Sets all variables to 0, nullptr for buffer.
+         */
         CircularBuffer();
         ~CircularBuffer();
         CircularBuffer(const CircularBuffer &cb);
 
         // Конструирует буфер заданной ёмкости.
-        explicit CircularBuffer(int capacity);
+        explicit CircularBuffer<T>(int capacity);
 
         // Конструирует буфер заданной ёмкости, целиком заполняет его элементом elem.
         CircularBuffer(int capacity, const T &elem);
@@ -61,7 +79,7 @@ namespace cb
 
         // Изменяет размер буфера.
         // В случае расширения, новые элементы заполняются элементом item.
-        void resize(int new_size, const T &item = value_type());
+        void resize(int new_size, const T &item = T());
 
         // Оператор присваивания.
         CircularBuffer &operator=(const CircularBuffer &cb);
