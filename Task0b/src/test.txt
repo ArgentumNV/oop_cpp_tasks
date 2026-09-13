@@ -1,0 +1,4 @@
+Apple, banana, APPLE!
+Orange; banana... orange.
+apple, orange, grape.
+Кот и собака? Кот, собака, кот!
